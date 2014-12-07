@@ -43,7 +43,15 @@ grandparent.append("rect")
 grandparent.append("text")
     .attr("x", 6)
     .attr("y", 6 - margin.top)
-    .attr("dy", ".75em");
+    .attr("dy", ".75em")
+    .attr("class", "top_label");
+
+grandparent.append("text")
+    .attr("x", width - margin.left - 6)
+    .attr("y", 6 - margin.top)
+    .attr("dy", ".75em")
+    .attr("class", "zoom_label")
+    .text("click to zoom out");
 
 d3.json("../data.json", function(root) {
   initialize(root);
@@ -93,7 +101,7 @@ d3.json("../data.json", function(root) {
     grandparent
         .datum(d.parent)
         .on("click", transition)
-      .select("text")
+      .select("text.top_label")
         .text(name(d));
 
     var g1 = svg.insert("g", ".grandparent")

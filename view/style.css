@@ -35,8 +35,15 @@ text {
   font-size: 12px;
 }
 
-.grandparent text {
+text.top_label {
   font-weight: bold;
+}
+
+text.zoom_label {
+  text-anchor: end;
+
+  font-style: italic;
+  color: #999;
 }
 
 rect {
