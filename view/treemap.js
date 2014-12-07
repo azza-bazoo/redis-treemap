@@ -1,8 +1,12 @@
 
-var margin = {top: 20, right: 0, bottom: 0, left: 0},
-    width = 960,
-    height = 500 - margin.top - margin.bottom,
-    formatNumber = d3.format(",d"),
+var style = getComputedStyle(document.querySelector('#chart'))
+
+var width = parseInt(style.width.slice(0, -2)),
+    height = parseInt(style.height.slice(0, -2));
+
+var margin = {top: 20, right: 0, bottom: 0, left: 0};
+
+var formatNumber = d3.format(",d"),
     transitioning;
 
 var x = d3.scale.linear()
@@ -10,18 +14,18 @@ var x = d3.scale.linear()
     .range([0, width]);
 
 var y = d3.scale.linear()
-    .domain([0, height])
-    .range([0, height]);
+    .domain([0, height - margin.top - margin.bottom])
+    .range([0, height - margin.top - margin.bottom]);
 
 var treemap = d3.layout.treemap()
     .children(function(d, depth) { return depth ? null : d._children; })
     .sort(function(a, b) { return a.value - b.value; })
-    .ratio(height / width * 0.5 * (1 + Math.sqrt(5)))
+    .ratio((height - margin.top - margin.bottom) / width * 0.5 * (1 + Math.sqrt(5)))
     .round(false);
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.bottom + margin.top)
+    .attr("height", height)
     .style("margin-left", -margin.left + "px")
     .style("margin.right", -margin.right + "px")
   .append("g")
@@ -50,7 +54,7 @@ d3.json("../data.json", function(root) {
   function initialize(root) {
     root.x = root.y = 0;
     root.dx = width;
-    root.dy = height;
+    root.dy = height - margin.top - margin.bottom;
     root.depth = 0;
   }
 
